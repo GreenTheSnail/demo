@@ -1,0 +1,98 @@
+### Create monitored endpoint - valid scenario
+POST http://localhost:8080/monitored-endpoints
+Authorization: 44444444-4444-4444-4444-444444444444
+Content-Type: application/json
+
+{
+  "name": "TEST",
+  "url": "http://localhost:9091/hello",
+  "monitoredInterval": 60
+}
+
+> {%
+    client.global.set("monitoredEndpointId", response.body["id"]);
+%}
+
+### Create monitored endpoint - valid scenario
+POST http://localhost:8080/monitored-endpoints
+Authorization: 44444444-4444-4444-4444-444444444444
+Content-Type: application/json
+
+{
+  "name": "TEST2",
+  "url": "http://localhost:9091/hello2",
+  "monitoredInterval": 60
+}
+
+> {%
+    client.global.set("monitoredEndpointId", response.body["id"]);
+%}
+
+### Create monitored endpoint - bad request scenario (Invalid interval)
+POST http://localhost:8080/monitored-endpoints
+Authorization: 44444444-4444-4444-4444-444444444444
+Content-Type: application/json
+
+{
+  "name": "TEST",
+  "url": "http://localhost:9091/hello",
+  "monitoredInterval": 0
+}
+
+### Get monitored endpoint by id - valid scenario
+GET http://localhost:8080/monitored-endpoints/{{monitoredEndpointId}}
+Authorization: 44444444-4444-4444-4444-444444444444
+
+### Get monitored endpoint by id - forbidden scenario
+GET http://localhost:8080/monitored-endpoints/{{monitoredEndpointId}}
+Authorization: 22222222-2222-2222-2222-222222222222
+
+### Get monitored endpoint by id - not found scenario
+GET http://localhost:8080/monitored-endpoints/{{$uuid}}
+Authorization: 44444444-4444-4444-4444-444444444444
+
+### Get all monitored endpoints
+GET http://localhost:8080/monitored-endpoints
+Authorization: 44444444-4444-4444-4444-444444444444
+
+### Update monitored endpoint - valid scenario
+PUT http://localhost:8080/monitored-endpoints
+Authorization: 44444444-4444-4444-4444-444444444444
+Content-Type: application/json
+
+{
+  "id": "{{monitoredEndpointId}}",
+  "monitoredInterval": 90
+}
+
+### Update monitored endpoint - forbidden scenario
+PUT http://localhost:8080/monitored-endpoints
+Authorization: 22222222-2222-2222-2222-222222222222
+Content-Type: application/json
+
+{
+  "id": "{{monitoredEndpointId}}",
+  "monitoredInterval": 90
+}
+
+### Update monitored endpoint - not found scenario
+PUT http://localhost:8080/monitored-endpoints
+Authorization: 44444444-4444-4444-4444-444444444444
+Content-Type: application/json
+
+{
+  "id": "{{$uuid}}",
+  "monitoredInterval": 90
+}
+
+### Delete monitored endpoint by id - valid scenario
+DELETE http://localhost:8080/monitored-endpoints/{{monitoredEndpointId}}
+Authorization: 44444444-4444-4444-4444-444444444444
+
+### Delete monitored endpoint by id - forbidden scenario
+DELETE http://localhost:8080/monitored-endpoints/{{monitoredEndpointId}}
+Authorization: 22222222-2222-2222-2222-222222222222
+
+### Delete monitored endpoint by id - not found scenario
+DELETE http://localhost:8080/monitored-endpoints/{{$uuid}}
+Authorization: 44444444-4444-4444-4444-444444444444

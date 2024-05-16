@@ -1,0 +1,19 @@
+### Get last ten monitoring results for defined endpoint (ordered by DateOfCheck) - valid scenario
+< {%
+    client.global.set(
+        "monitoredEndpointId",
+        "ef230a4f-5d70-4b53-bc17-4af2e814cc1a"
+    )
+%}
+GET http://localhost:8080/monitored-results/{{monitoredEndpointId}}
+Authorization: 44444444-4444-4444-4444-444444444444
+
+
+### Get last ten monitoring results for defined endpoint (ordered by DateOfCheck) - forbidden scenario
+GET http://localhost:8080/monitored-results/{{monitoredEndpointId}}
+Authorization: 22222222-2222-2222-2222-222222222222
+
+
+### Get last ten monitoring results for defined endpoint (ordered by DateOfCheck) - not found scenario
+GET http://localhost:8080/monitored-results/{{$uuid}}
+Authorization: 44444444-4444-4444-4444-444444444444
