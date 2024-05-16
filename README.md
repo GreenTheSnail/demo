@@ -1,6 +1,6 @@
 
 # Monitoring rest application
-Project to crud endpoints to monitor, monitor on the background and get results (test for applifting).
+Project to create, read, update and delete endpoints to monitore, monitore them on the background and get results (test for applifting).
 
 
 
