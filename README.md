@@ -21,7 +21,7 @@ Project to create, read, update and delete endpoints to monitore, monitore them 
 
 **Mock server:** Wiremock (Docker)
 
-**Tetst framework:** Kotest
+**Test framework:** Kotest
 
 ## Deployment
 
@@ -30,19 +30,19 @@ To deploy this project run
 ```bash
   docker compose up -d
 ```
-it will create mySql database container and also create mock server with defined endpoint for test reasons (definition can be found in ../wiremock)
+It will create mySql database container and also create mock server with defined endpoint for test reasons (definition can be found in ../wiremock)
 
-and then you can run DemoApplication (on startup it will create all needed tables and relations and also 3 test users) 
+And then you can run DemoApplication (on startup it will create all needed tables and relations and also 3 test users) 
 
 
 ## Usage description
 Base scenario:
 1. Create monitored endpoint.
 2. Wait.
-3. Get all endpoints.
+3. Get all monitored endpoints.
 4. Get monitoring results by Id of an endpoint you are intrested in.
 
-**That is just a basic scenario, you can find some others request examaples in ../rest-api.**
+**That is just a basic scenario, you can find some others request examples in ../rest-api.**
 
 
 
