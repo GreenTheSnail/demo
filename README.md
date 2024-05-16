@@ -19,7 +19,7 @@ Project to create, read, update and delete endpoints to monitore, monitore them 
 
 **Formating:** Ktlint
 
-**Mock server:** Wiremock
+**Mock server:** Wiremock (Docker)
 
 **Tetst framework:** Kotest
 
@@ -30,168 +30,162 @@ To deploy this project run
 ```bash
   docker compose up -d
 ```
-it will create mySql database container and also create mock server with defined endpoint for test reasons(definition can be found in ../wiremock)
+it will create mySql database container and also create mock server with defined endpoint for test reasons (definition can be found in ../wiremock)
 
-and then you can run DemoApplication(on startup it will create all needed tables and relations and also 3 test users) 
+and then you can run DemoApplication (on startup it will create all needed tables and relations and also 3 test users) 
 
 
 ## API Reference
+### Create Monitored Endpoint (`/monitored-endpoints`)
 
-### Create User (`/user`)
+#### Create monitored endpoint [POST]
 
-#### Create user [POST]
-
-- **Summary**: Create user
-- **Operation ID**: createUser
-- **Tags**: User
+- Summary: Create monitored endpoint
+- Operation ID: createMonitoredEndpoint
+- Tags: MonitoredEndpoint
 
 ##### Request Body
 
-- **Content Type**: application/json
-- **Schema**: [UserCreationEnvelope](#usercreationenvelope)
-- **Required**: Yes
+- Content Type: application/json
+- Schema: MonitoredEndpointCreationEnvelope
+- Required: Yes
 
 ##### Responses
 
-- **Response 201 (application/json)**
+- Response 201 (application/json)
+    - Description: Monitored endpoint creation was successful
+    - Schema: MonitoredEndpoint
 
-    - **Description**: User creation was successful
-    - **Schema**: string
+- Response 400 (application/json)
+    - Description: Bad Request.
+    - Schema: BadRequest
 
-- **Response 400 (application/json)**
+### Delete Monitored Endpoint (`/monitored-endpoints/{endpointId}`)
 
-    - **Description**: Bad Request.
-    - **Schema**: [BadRequest](#badrequest)
+#### Delete monitored endpoint [DELETE]
 
-### Delete User (`/user/{userId}`)
-
-#### Delete user [DELETE]
-
-- **Summary**: Delete user
-- **Operation ID**: deleteUserById
-- **Tags**: User
+- Summary: Delete monitored endpoint
+- Operation ID: deleteMonitoredEndpoint
+- Tags: MonitoredEndpoint
 
 ##### Parameters
 
-- `userId` (path, required, string): User ID.
+- endpointId (path, required, string): Monitored Endpoint ID.
 
 ##### Responses
 
-- **Response 200 (application/json)**
+- Response 200 (application/json)
+    - Description: Monitored endpoint deletion was successful
 
-    - **Description**: User deletion was successful
-
-- **Response 404 (application/json)**
-
-    - **Description**: Resource not found.
-    - **Schema**: [NotFound](#notfound)
+- Response 404 (application/json)
+    - Description: Resource not found.
+    - Schema: NotFound
  
-### Get User by Identification Number (`/user/{identificationNumber}`)
+### Get Monitored Endpoint by ID (`/monitored-endpoints/{endpointId}`)
 
-#### Get user by its identification number [GET]
+#### Get monitored endpoint by its ID [GET]
 
-- **Summary**: Get user by its identification number
-- **Operation ID**: getUsersByIdentificationNumber
-- **Tags**: User
+- Summary: Get monitored endpoint by its ID
+- Operation ID: getMonitoredEndpointById
+- Tags: MonitoredEndpoint
 
 ##### Parameters
 
-- `identificationNumber` (path, required, string): Identification number of the user.
+- endpointId (path, required, string): ID of the monitored endpoint.
 
 ##### Responses
 
-- **Response 200 (application/json)**
+- Response 200 (application/json)
+    - Description: Get of a monitored endpoint by ID was successful.
+    - Schema: MonitoredEndpoint
 
-    - **Description**: Get of an user by identification number was successful.
-    - **Schema**: [User](#user)
+- Response 404 (application/json)
+    - Description: Resource not found.
+    - Schema: NotFound
 
-- **Response 404 (application/json)**
-
-    - **Description**: Resource not found.
-    - **Schema**: [NotFound](#notfound)
-
-- **Response 400 (application/json)**
-
-    - **Description**: Bad Request.
-    - **Schema**: [BadRequest](#badrequest)
+- Response 400 (application/json)
+    - Description: Bad Request.
+    - Schema: BadRequest
 
 ## Data Structures
 
-### User
+### MonitoredEndpoint
 
-- **Type**: object
-- **Description**: User.
-- **Required**:
+- Type: object
+- Description: Monitored Endpoint.
+- Required:
   - id
   - name
-  - surname
-  - identificationNumber
-  - age
+  - url
+  - dateOfLastUpdate
+  - monitoredInterval
+  - owner
 
 #### Properties
 
-- `id`: [UserId](#userid)
-- `name`: [Name](#name)
-- `surname`: [Surname](#surname)
-- `identificationNumber`: [IdentificationNumber](#identificationnumber)
-- `age`: [Age](#age)
+- id: MonitoredEndpointId
+- name: string
+- url: string
+- dateOfLastUpdate: string (ISO 8601 date)
+- dateOfLastCheck: string (ISO 8601 date)
+- monitoredInterval: integer
+- owner: User
 
-### UserCreationEnvelope
+### MonitoredEndpointCreationEnvelope
 
-- **Type**: object
-- **Description**: User creation object.
-- **Required**:
+- Type: object
+- Description: Monitored endpoint creation object.
+- Required:
   - name
-  - surname
-  - identificationNumber
+  - url
+  - monitoredInterval
 
 #### Properties
 
-- `name`: [Name](#name)
-- `surname`: [Surname](#surname)
-- `identificationNumber`: [IdentificationNumber](#identificationnumber)
+- name: string
+- url: string
+- monitoredInterval: integer
+
+### MonitoredEndpointId
+
+- Type: string
+- Format: uuid
+- Description: Monitored Endpoint ID.
+- Example: 456a8e62-f79d-4452-834c-dedbfddb395e
+
+### User
+
+- Type: object
+- Description: User.
+- Required:
+  - id
+  - username
+  - email
+  - accessToken
+
+#### Properties
+
+- id: UserId
+- username: string
+- email: string
+- accessToken: UUID
 
 ### UserId
 
-- **Type**: string
-- **Format**: uuid
-- **Description**: User ID.
-- **Example**: 456a8e62-f79d-4452-834c-dedbfddb395e
-
-### IdentificationNumber
-
-- **Type**: string
-- **Description**: Identification number of an user.
-- **Example**: 100510/6219
-
-### Name
-
-- **Type**: string
-- **Description**: Name of an user.
-- **Example**: Paul
-
-### Surname
-
-- **Type**: string
-- **Description**: Surname of an user.
-- **Example**: White
-
-### Age
-
-- **Type**: integer
-- **Description**: Age of an user.
-- **Example**: 18
+- Type: string
+- Format: uuid
+- Description: User ID.
+- Example: 456a8e62-f79d-4452-834c-dedbfddb395e
 
 ## Responses
 
 ### NotFound
 
-- **Description**: Resource not found.
+- Description: Resource not found.
 
 ### BadRequest
 
-- **Description**: Bad Request.
-
+- Description: Bad Request.
 
 
 ## Authors
