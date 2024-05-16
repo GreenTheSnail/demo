@@ -40,7 +40,7 @@ Base scenario:
 1. Create monitored endpoint.
 2. Wait.
 3. Get all endpoints.
-4. Get monitoring results by Id of endpoint you are intrested in.
+4. Get monitoring results by Id of an endpoint you are intrested in.
 
 **That is just a basic scenario, you can find some others request examaples in ../rest-api.**
 
